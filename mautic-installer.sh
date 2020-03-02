@@ -10,9 +10,9 @@ web_root='/var/www/mautic'
 #email='changethis@example.com'
 timezone='America/Sao_Paulo'
 
-read -r -p "Mysql database password for $(db_user) user:" -e -n 1 pass
-read -r -p 'Mautic installation domain (has to be already configured):' -e -n 1 domain
-read -r -p 'Mautic admin email:' -e -n 1 email
+read -r -p "Mysql database password for $(db_user) user:" -n 1 pass
+read -r -p 'Mautic installation domain (has to be already configured):' -n 1 domain
+read -r -p 'Mautic admin email:' -n 1 email
 
 ### Set default parameters
 
