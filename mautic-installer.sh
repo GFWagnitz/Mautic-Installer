@@ -1,13 +1,18 @@
 #!/bin/bash
 
 #Variables
-pass='MauticDBPa$$123'
-db_name='MauticAutomation'
-db_user='MauticUser'
+
+db_name='mautic'
+db_user='mautic'
 web_root='/var/www/mautic'
-domain='example.com'
-email='changethis@example.com'
-timezone='America/New_York'
+#pass='pass'
+#domain='example.com'
+#email='changethis@example.com'
+timezone='America/Sao_Paulo'
+
+read -r -p "Mysql database password for $(db_user) user:" -e -n 1 pass
+read -r -p 'Mautic installation domain (has to be already configured):' -e -n 1 domain
+read -r -p 'Mautic admin email:' -e -n 1 email
 
 ### Set default parameters
 
@@ -23,8 +28,8 @@ if [ "$(whoami)" != 'root' ]; then
 fi
 
 #Ensure it only works on ubuntu and install apps for specific versions
-if [  -n "$(uname -a | grep Ubuntu)" ]; then
-        echo `lsb_release -d | grep -oh Ubuntu.*`
+if uname -a | grep -q Ubuntu; then
+        lsb_release -d | grep -oh 'Ubuntu.*'
 
         echo "Updating the repository."
         add-apt-repository -y ppa:certbot/certbot
@@ -34,7 +39,7 @@ if [  -n "$(uname -a | grep Ubuntu)" ]; then
         apt-get --assume-yes install php-zip php-xml php-imap php-opcache php-apcu php-memcached php-mbstring php-curl php-amqplib php-mbstring php-bcmath php-intl
 
 
-        x=`lsb_release -rs`
+        x=$(lsb_release -rs)
         if (($(echo "$x < 18.04" | bc -l) ));then
                 echo "old version"
                 apt-get --assume-yes install php-mcrypt
@@ -43,7 +48,7 @@ else
         echo "This script is only compatible and tested on Ubuntu"
         exit 1
 fi
-cd /etc/apache2/mods-enabled/
+cd /etc/apache2/mods-enabled/ || exit
 sed -e 's/\s*DirectoryIndex.*$/\tDirectoryIndex index\.php index\.html index\.cgi index\.pl index\.xhtml index\.htm/' \
     dir.conf > /tmp/dir.conf && mv /tmp/dir.conf dir.conf
 systemctl restart apache2
@@ -77,7 +82,7 @@ rm mautic.zip
 
 apacheUser=$(ps -ef | egrep '(httpd|apache2|apache)' | grep -v root | head -n1 | awk '{print $1}')
 # Set permissions for apache
-cd $web_root
+cd $web_root || exit
 chown -R $USER:$apacheUser .
 find . -type d -exec chmod 755 {} \;
 find . -type f -exec chmod 644 {} \;
