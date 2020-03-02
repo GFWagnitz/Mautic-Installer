@@ -151,20 +151,20 @@ sed 's#^;*date\.timezone[[:space:]]=.*$#date.timezone = "'"$timezone"'"#' $ini >
 #Setup SSL for https
 certbot -d $domain --non-interactive --redirect --keep-until-expiring --agree-tos --apache -m $email
 
-(crontab -l 2>/dev/null; echo "8,23,38,52 * * * *     www-data   php /var/www/html/app/console mautic:segments:update > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "       */5 * * * *     www-data   php /var/www/html/app/console mautic:import > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "5,20,35,50 * * * *     www-data   php /var/www/html/app/console mautic:campaigns:rebuild > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "2,17,32,47 * * * *     www-data   php /var/www/html/app/console mautic:campaigns:trigger > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:messages:send > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:emails:send > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:email:fetch > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:social:monitoring > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:webhooks:process > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "0,15,30,45 * * * *     www-data   php /var/www/html/app/console mautic:broadcasts:send > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "         * 1 * * *     www-data   php /var/www/html/app/console mautic:maintenance:cleanup --days-old=365 > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "        0 4 15 * *     www-data   php /var/www/html/app/console mautic:iplookup:download > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "       */5 * * * *     www-data   php /var/www/html/app/console mautic:reports:scheduler > /var/log/cron.pipe 2>&1") | crontab -
-(crontab -l 2>/dev/null; echo "        0 5 10 * *     www-data   php /var/www/html/app/console mautic:unusedip:delete > /var/log/cron.pipe 2>&1") | crontab -
+(crontab -u www-data -l 2>/dev/null; echo "8,23,38,52 * * * *   php /var/www/mautic/app/console mautic:segments:update > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "       */5 * * * *   php /var/www/mautic/app/console mautic:import > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "5,20,35,50 * * * *   php /var/www/mautic/app/console mautic:campaigns:rebuild > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "2,17,32,47 * * * *   php /var/www/mautic/app/console mautic:campaigns:trigger > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "0,15,30,45 * * * *   php /var/www/mautic/app/console mautic:messages:send > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "2,17,32,47 * * * *   php /var/www/mautic/app/console mautic:emails:send > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "4,19,34,49 * * * *   php /var/www/mautic/app/console mautic:email:fetch > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "6,21,36,51 * * * *   php /var/www/mautic/app/console mautic:social:monitoring > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "8,23,38,53 * * * *   php /var/www/mautic/app/console mautic:webhooks:process > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "10,25,40,59 * * * *   php /var/www/mautic/app/console mautic:broadcasts:send > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "         * 1 * * *   php /var/www/mautic/app/console mautic:maintenance:cleanup --days-old=365 > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "        0 4 15 * *   php /var/www/mautic/app/console mautic:iplookup:download > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "       */5 * * * *   php /var/www/mautic/app/console mautic:reports:scheduler > /var/log/cron.pipe 2>&1") | crontab -u www-data -
+(crontab -u www-data -l 2>/dev/null; echo "        0 5 10 * *   php /var/www/mautic/app/console mautic:unusedip:delete > /var/log/cron.pipe 2>&1") | crontab -u www-data -
 
 ### show the finished message
 echo -e $"Complete! \nYou now have a new Virtual Host \nYour new host is: https://$domain \nAnd its located at $web_root"
