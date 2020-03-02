@@ -10,9 +10,12 @@ web_root='/var/www/mautic'
 #email='changethis@example.com'
 timezone='America/Sao_Paulo'
 
-read -r -p "Mysql database password for $db_user user:\n" pass
-read -r -p 'Mautic installation domain (has to be already configured):\n' domain
-read -r -p 'Mautic admin email:\n' email
+printf "Mysql database password for %s user:\n" "$db_user"
+read -r pass
+printf "Mautic installation domain (has to be already configured):\n"
+read -r domain
+printf "Mautic admin email:\n"
+read -r email
 
 ### Set default parameters
 
@@ -53,6 +56,7 @@ sed -e 's/\s*DirectoryIndex.*$/\tDirectoryIndex index\.php index\.html index\.cg
     dir.conf > /tmp/dir.conf && mv /tmp/dir.conf dir.conf
 systemctl restart apache2
 
+# TODO: Mysql easy install with secure root printed at the end
 while true; do
     read -p "Do you wish to secure your mysql installation? Y/N: " yn
     case $yn in
